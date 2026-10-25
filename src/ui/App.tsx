@@ -5,10 +5,9 @@ import {
 	useFonts,
 } from '@expo-google-fonts/host-grotesk';
 
-import { theme } from '@ui/styles/theme';
-
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Navigation } from '@app/navigation';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export function App() {
 	const [isFontsLoaded] = useFonts({
@@ -22,25 +21,10 @@ export function App() {
 	}
 
 	return (
-		<View style={styles.container}>
-			<Text
-				style={{
-					fontFamily: theme.fontFamily.sans.semiBold,
-					fontSize: theme.fontSize.base,
-				}}
-			>
-				Open up App.tsx to start working on your app!
-			</Text>
-			<StatusBar style="auto" />
-		</View>
+		<GestureHandlerRootView>
+			<SafeAreaProvider>
+				<Navigation />
+			</SafeAreaProvider>
+		</GestureHandlerRootView>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: theme.colors.lime[500],
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-});
