@@ -1,4 +1,3 @@
-import { RouteProp } from '@react-navigation/native';
 import {
 	createNativeStackNavigator,
 	NativeStackNavigationProp,
@@ -8,7 +7,9 @@ import {
 import { Greetings } from '@ui/screens/Greetings';
 import { Onboarding } from '@ui/screens/Onboarding';
 
-type AuthStackParamList = {
+import type { RouteProp } from '@react-navigation/native';
+
+export type AuthStackParamList = {
 	greetings: undefined;
 	onboarding: undefined;
 };
