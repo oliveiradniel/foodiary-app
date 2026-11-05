@@ -1,12 +1,20 @@
-import { AppText } from '@ui/components/AppText';
-import { View } from 'react-native';
+import { theme } from '@ui/styles/theme';
+
+import { KeyboardAvoidingView, Platform } from 'react-native';
+import { OnboardingStack } from './OnboardingStack';
+import { OnboardingHeader } from './components/OnboardingHeader';
+import { OnboardingProvider } from './context/OnboardingProvider';
 
 export function Onboarding() {
 	return (
-		<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-			<AppText size="3xl" weight="semiBold">
-				Onboarding
-			</AppText>
-		</View>
+		<OnboardingProvider>
+			<KeyboardAvoidingView
+				behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+				style={{ flex: 1, backgroundColor: theme.colors.white }}
+			>
+				<OnboardingHeader />
+				<OnboardingStack />
+			</KeyboardAvoidingView>
+		</OnboardingProvider>
 	);
 }
