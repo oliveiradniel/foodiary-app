@@ -50,6 +50,7 @@ export function BirthdateStep() {
 						mode="date"
 						display={!isAndroid ? 'spinner' : 'calendar'}
 						value={date}
+						maximumDate={new Date()}
 						onValueChange={handleSelectDate}
 						onDismiss={() => setIsDatePickerVisible(false)}
 					/>
