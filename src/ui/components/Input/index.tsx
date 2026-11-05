@@ -29,6 +29,7 @@ export type InputProps = BaseTextInputProps & {
 	disabled?: boolean;
 	InputComponent?: InputComponentType;
 	ref?: Ref<TextInputInstance>;
+	formatter?: (value: string) => string;
 };
 
 export function Input({
@@ -38,10 +39,15 @@ export function Input({
 	onFocus,
 	onBlur,
 	InputComponent = TextInput,
+	value,
+	defaultValue,
+	onChangeText,
+	formatter,
 	ref,
 	...props
 }: InputProps) {
 	const [isFocused, setIsFocused] = useState(false);
+	const [internalValue, setInternalValue] = useState(defaultValue ?? '');
 
 	function handleFocus(event: FocusEvent) {
 		setIsFocused(true);
@@ -51,6 +57,13 @@ export function Input({
 	function handleBlur(event: BlurEvent) {
 		setIsFocused(false);
 		onBlur?.(event);
+	}
+
+	function handleChangeText(text: string) {
+		const formattedText = formatter?.(text) ?? text;
+
+		setInternalValue(formattedText);
+		onChangeText?.(formattedText);
 	}
 
 	const AnimatedInput = useMemo(
@@ -79,6 +92,9 @@ export function Input({
 			onFocus={handleFocus}
 			onBlur={handleBlur}
 			readOnly={disabled}
+			value={formatter ? (value ?? internalValue) : value}
+			defaultValue={defaultValue}
+			onChangeText={handleChangeText}
 			{...props}
 		/>
 	);
