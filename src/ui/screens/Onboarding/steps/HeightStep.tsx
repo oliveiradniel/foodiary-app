@@ -1,3 +1,4 @@
+import { Controller, useFormContext } from 'react-hook-form';
 import { useOnboarding } from '../context/useOnboarding';
 
 import { formatDecimal } from '@ui/utils/formatDecimal';
@@ -16,8 +17,20 @@ import {
 	StepTitle,
 } from '../components/Step';
 
+import type { OnboardingSchema } from '../schema';
+
 export function HeightStep() {
 	const { nextStep } = useOnboarding();
+
+	const form = useFormContext<OnboardingSchema>();
+
+	async function handleNextStep() {
+		const isValid = await form.trigger('height');
+
+		if (isValid) {
+			nextStep();
+		}
+	}
 
 	return (
 		<Step>
@@ -27,18 +40,34 @@ export function HeightStep() {
 			</StepHeader>
 
 			<StepContent position="center">
-				<FormGroup label="Altura" style={{ width: '100%' }}>
-					<Input
-						placeholder="175"
-						keyboardType="numeric"
-						formatter={formatDecimal}
-						autoFocus
-					/>
-				</FormGroup>
+				<Controller
+					control={form.control}
+					name="height"
+					render={({ field, fieldState }) => (
+						<FormGroup
+							label="Altura"
+							style={{ width: '100%' }}
+							error={fieldState.error?.message}
+						>
+							<Input
+								placeholder="175"
+								value={field.value}
+								onChangeText={(value) => {
+									field.onChange(value);
+
+									form.trigger('height');
+								}}
+								keyboardType="numeric"
+								formatter={formatDecimal}
+								autoFocus
+							/>
+						</FormGroup>
+					)}
+				/>
 			</StepContent>
 
 			<StepFooter>
-				<Button size="icon" onPress={nextStep}>
+				<Button size="icon" onPress={handleNextStep}>
 					<ArrowRightIcon />
 				</Button>
 			</StepFooter>

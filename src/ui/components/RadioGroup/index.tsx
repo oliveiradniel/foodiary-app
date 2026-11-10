@@ -1,4 +1,4 @@
-import { createContext, use, useState } from 'react';
+import { createContext, use } from 'react';
 
 import { theme } from '@ui/styles/theme';
 import { styles } from './styles';
@@ -10,29 +10,34 @@ import type { ReactNode } from 'react';
 
 type RadioGroupContextValue = {
 	value: string | null;
-	setValue: (value: string | null) => void;
+	setValue: (value: string) => void;
 	isHorizontal: boolean;
+	error: boolean;
 };
 
 const RadioGroupContext = createContext({} as RadioGroupContextValue);
 
 type RadioGroupProps = {
 	children: ReactNode;
-	initialValue?: string;
+	value: string | null;
+	onChangeValue: (value: string) => void;
 	orientation?: 'vertical' | 'horizontal';
+	error?: boolean;
 };
 
 export function RadioGroup({
 	children,
-	initialValue,
+	value,
+	onChangeValue,
 	orientation = 'vertical',
+	error = false,
 }: RadioGroupProps) {
-	const [value, setValue] = useState<string | null>(initialValue ?? null);
-
 	const isHorizontal = orientation === 'horizontal';
 
 	return (
-		<RadioGroupContext.Provider value={{ value, setValue, isHorizontal }}>
+		<RadioGroupContext.Provider
+			value={{ value, setValue: onChangeValue, isHorizontal, error }}
+		>
 			<View
 				style={[styles.container, isHorizontal && styles.containerHorizontal]}
 			>
@@ -54,6 +59,7 @@ export function RadioGroupItem({ children, value }: RadioGroupItemProps) {
 		value: selectedValue,
 		setValue,
 		isHorizontal,
+		error,
 	} = use(RadioGroupContext);
 	const isSelected = value === selectedValue;
 
@@ -62,8 +68,9 @@ export function RadioGroupItem({ children, value }: RadioGroupItemProps) {
 			<TouchableOpacity
 				style={[
 					styles.item,
-					isSelected && styles.selectedItem,
 					isHorizontal && styles.horizontalItem,
+					isSelected && styles.selectedItem,
+					error && styles.errorItem,
 				]}
 				onPress={() => setValue(value)}
 			>
@@ -74,10 +81,11 @@ export function RadioGroupItem({ children, value }: RadioGroupItemProps) {
 }
 
 export function RadioGroupIcon({ children }: { children: string }) {
+	const { error } = use(RadioGroupContext);
 	const { isSelected } = use(RadioGroupItemContext);
 
 	return (
-		<View style={[styles.icon, isSelected && styles.selectedIcon]}>
+		<View style={[styles.icon, (isSelected || error) && styles.whiteIconBg]}>
 			<AppText>{children}</AppText>
 		</View>
 	);

@@ -1,7 +1,9 @@
+import { Controller, useFormContext } from 'react-hook-form';
 import { useOnboarding } from '../context/useOnboarding';
 
 import { ArrowRightIcon } from 'lucide-react-native';
 
+import { ActivityLevel } from '@app/types/ActivityLevel';
 import { Button } from '@ui/components/Button';
 import {
 	RadioGroup,
@@ -19,13 +21,7 @@ import {
 	StepTitle,
 } from '../components/Step';
 
-export enum ActivityLevel {
-	SEDENTARY = 'SEDENTARY',
-	LIGHT = 'LIGHT',
-	MODERATE = 'MODERATE',
-	HEAVY = 'HEAVY',
-	ATHLETE = 'ATHLETE',
-}
+import type { OnboardingSchema } from '../schema';
 
 const radioGroupItems = [
 	{
@@ -63,6 +59,16 @@ const radioGroupItems = [
 export function ActivityLevelStep() {
 	const { nextStep } = useOnboarding();
 
+	const form = useFormContext<OnboardingSchema>();
+
+	async function handleNextStep() {
+		const isValid = await form.trigger('activityLevel');
+
+		if (isValid) {
+			nextStep();
+		}
+	}
+
 	return (
 		<Step>
 			<StepHeader>
@@ -70,22 +76,36 @@ export function ActivityLevelStep() {
 			</StepHeader>
 
 			<StepContent>
-				<RadioGroup>
-					{radioGroupItems.map(({ value, icon, label, description }) => (
-						<RadioGroupItem key={value} value={value}>
-							<RadioGroupIcon>{icon}</RadioGroupIcon>
+				<Controller
+					control={form.control}
+					name="activityLevel"
+					render={({ field, fieldState }) => (
+						<RadioGroup
+							value={field.value}
+							onChangeValue={(value) => {
+								field.onChange(value);
 
-							<RadioGroupItemInfo>
-								<RadioGroupLabel>{label}</RadioGroupLabel>
-								<RadioGroupDescription>{description}</RadioGroupDescription>
-							</RadioGroupItemInfo>
-						</RadioGroupItem>
-					))}
-				</RadioGroup>
+								form.trigger('activityLevel');
+							}}
+							error={!!fieldState.error}
+						>
+							{radioGroupItems.map(({ value, icon, label, description }) => (
+								<RadioGroupItem key={value} value={value}>
+									<RadioGroupIcon>{icon}</RadioGroupIcon>
+
+									<RadioGroupItemInfo>
+										<RadioGroupLabel>{label}</RadioGroupLabel>
+										<RadioGroupDescription>{description}</RadioGroupDescription>
+									</RadioGroupItemInfo>
+								</RadioGroupItem>
+							))}
+						</RadioGroup>
+					)}
+				/>
 			</StepContent>
 
 			<StepFooter>
-				<Button size="icon" onPress={nextStep}>
+				<Button size="icon" onPress={handleNextStep}>
 					<ArrowRightIcon />
 				</Button>
 			</StepFooter>

@@ -1,3 +1,4 @@
+import { Controller, useFormContext } from 'react-hook-form';
 import { useOnboarding } from '../context/useOnboarding';
 
 import { ArrowRightIcon } from 'lucide-react-native';
@@ -18,11 +19,9 @@ import {
 	StepTitle,
 } from '../components/Step';
 
-export enum Goal {
-	LOSE = 'LOSE',
-	MAINTAIN = 'MAINTAIN',
-	GAIN = 'GAIN',
-}
+import { Goal } from '@app/types/Goal';
+
+import type { OnboardingSchema } from '../schema';
 
 const radioGroupItems = [
 	{
@@ -45,6 +44,16 @@ const radioGroupItems = [
 export function GoalStep() {
 	const { nextStep } = useOnboarding();
 
+	const form = useFormContext<OnboardingSchema>();
+
+	async function handleNextStep() {
+		const isValid = await form.trigger('goal');
+
+		if (isValid) {
+			nextStep();
+		}
+	}
+
 	return (
 		<Step>
 			<StepHeader>
@@ -53,19 +62,33 @@ export function GoalStep() {
 			</StepHeader>
 
 			<StepContent>
-				<RadioGroup>
-					{radioGroupItems.map(({ value, icon, label }) => (
-						<RadioGroupItem key={value} value={value}>
-							<RadioGroupIcon>{icon}</RadioGroupIcon>
+				<Controller
+					control={form.control}
+					name="goal"
+					render={({ field, fieldState }) => (
+						<RadioGroup
+							value={field.value}
+							onChangeValue={(value) => {
+								field.onChange(value);
 
-							<RadioGroupLabel>{label}</RadioGroupLabel>
-						</RadioGroupItem>
-					))}
-				</RadioGroup>
+								form.trigger('goal');
+							}}
+							error={!!fieldState.error}
+						>
+							{radioGroupItems.map(({ value, icon, label }) => (
+								<RadioGroupItem key={value} value={value}>
+									<RadioGroupIcon>{icon}</RadioGroupIcon>
+
+									<RadioGroupLabel>{label}</RadioGroupLabel>
+								</RadioGroupItem>
+							))}
+						</RadioGroup>
+					)}
+				/>
 			</StepContent>
 
 			<StepFooter>
-				<Button size="icon" onPress={nextStep}>
+				<Button size="icon" onPress={handleNextStep}>
 					<ArrowRightIcon />
 				</Button>
 			</StepFooter>
