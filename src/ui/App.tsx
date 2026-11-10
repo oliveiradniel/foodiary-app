@@ -5,9 +5,14 @@ import {
 	useFonts,
 } from '@expo-google-fonts/host-grotesk';
 
+import { AuthProvider } from '@app/contexts/AuthContext/AuthProvider';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import { Navigation } from '@app/navigation';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { queryClient } from '@app/lib/queryClient';
 
 export function App() {
 	const [isFontsLoaded] = useFonts({
@@ -23,7 +28,11 @@ export function App() {
 	return (
 		<GestureHandlerRootView>
 			<SafeAreaProvider>
-				<Navigation />
+				<QueryClientProvider client={queryClient}>
+					<AuthProvider>
+						<Navigation />
+					</AuthProvider>
+				</QueryClientProvider>
 			</SafeAreaProvider>
 		</GestureHandlerRootView>
 	);

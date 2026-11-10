@@ -10,9 +10,17 @@ No test runner is configured, so `pnpm lint` and `pnpm typecheck` are the only a
 
 ## Architecture
 
-`index.ts` registers `src/ui/App.tsx`, which loads the Host Grotesk fonts (rendering nothing until they are ready), sets up the gesture handler and safe area providers, and renders `Navigation` from `@app/navigation`. There is no auth or session logic yet: `AuthStack` is the only root stack.
+`index.ts` registers `src/ui/App.tsx`, which loads the Host Grotesk fonts (rendering nothing until they are ready), sets up the gesture handler, safe area, `QueryClientProvider` and `AuthProvider`, and renders `Navigation` from `@app/navigation`.
 
 UI text is in Brazilian Portuguese.
+
+### Auth and session
+
+`AuthProvider` (`src/app/contexts/AuthContext/`) restores the tokens saved by `AuthTokensManager` on startup and keeps the splash screen visible until that finishes. `useAuth()` exposes `signedIn`, `signIn`, `signUp` and `signOut`. `signedIn` is true when the account query has data, and `RootStack` uses it to render either `AuthStack` or `AppStack`, so screens never navigate between them by hand.
+
+`signIn` and `signUp` reject if the account fails to load after the tokens are issued, so callers must handle that failure as well as a rejected credentials request.
+
+API access lives in `src/services/` (alias `@services/*`). Each service extends `Service`, which holds the shared axios client and the access token. Query hooks live next to their service, in `hooks/`. The base URL comes from `EXPO_PUBLIC_API_URL`, validated in `src/app/config/env.ts`.
 
 ### Onboarding is a nested, independent navigator
 
