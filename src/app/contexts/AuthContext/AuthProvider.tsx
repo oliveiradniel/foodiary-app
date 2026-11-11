@@ -30,6 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	});
 
 	const [isReady, setIsReady] = useState(false);
+	const [signedUp, setSignedUp] = useState(false);
 
 	async function setupAuth(tokens: SetupAuthParams) {
 		Service.setAccessToken(tokens.accessToken);
@@ -85,7 +86,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		const tokens = await AuthService.signUp(payload);
 
 		await AuthTokensManager.save(tokens);
-		await setupAuth(tokens);
+
+		setSignedUp(true);
+
+		try {
+			await setupAuth(tokens);
+		} catch (error) {
+			setSignedUp(false);
+			throw error;
+		}
 	}
 
 	async function signOut() {
@@ -96,6 +105,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		forceRender();
 
 		await AuthTokensManager.clear();
+
+		setSignedUp(false);
 	}
 
 	if (!isReady) {
@@ -103,7 +114,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	}
 
 	return (
-		<AuthContext value={{ signedIn: !!account, signIn, signUp, signOut }}>
+		<AuthContext
+			value={{ signedIn: !!account, signedUp, signIn, signUp, signOut }}
+		>
 			{children}
 		</AuthContext>
 	);
