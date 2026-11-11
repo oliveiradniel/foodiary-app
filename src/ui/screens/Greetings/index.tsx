@@ -36,6 +36,7 @@ export function Greetings() {
 							color={theme.colors.white}
 							weight="semiBold"
 							size="3xl"
+							align="center"
 							style={styles.heading}
 						>
 							Controle sua dieta de forma simples

@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
 	ctaContainer: { width: '100%', alignItems: 'center' },
 	heading: {
 		letterSpacing: -0.32,
-		textAlign: 'center',
 		maxWidth: 311,
 	},
 	ctaContent: {
