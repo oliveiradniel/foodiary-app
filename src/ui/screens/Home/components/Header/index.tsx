@@ -1,3 +1,5 @@
+import { useHomeContext } from '../../context/useHomeContext';
+
 import { styles } from './styles';
 
 import { AppText } from '@ui/components/AppText';
@@ -7,6 +9,8 @@ import { DateSwitcher } from '../DateSwitcher';
 import { UserHeader } from '../UserHeader';
 
 export function Header() {
+	const { isLoading } = useHomeContext();
+
 	return (
 		<View>
 			<UserHeader />
@@ -17,7 +21,10 @@ export function Header() {
 
 				<View style={styles.divider} />
 
-				<AppText weight="medium" style={styles.mealsLabel}>
+				<AppText
+					weight="medium"
+					style={[styles.mealsLabel, { opacity: isLoading ? 0.5 : 1 }]}
+				>
 					REFEIÇÕES
 				</AppText>
 			</View>
