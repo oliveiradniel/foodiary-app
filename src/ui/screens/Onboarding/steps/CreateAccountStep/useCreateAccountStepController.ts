@@ -1,4 +1,4 @@
-import { useAuth } from '@app/contexts/AuthContext/useAuth';
+import { useAuthContext } from '@app/contexts/AuthContext/useAuthContext';
 import { useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -15,7 +15,7 @@ export function useCreateAccountStepController() {
 	const passwordInputRef = useRef<TextInputInstance>(null);
 	const confirmPasswordInputRef = useRef<TextInputInstance>(null);
 
-	const { signUp } = useAuth();
+	const { signUp } = useAuthContext();
 
 	const form = useFormContext<OnboardingSchema>();
 

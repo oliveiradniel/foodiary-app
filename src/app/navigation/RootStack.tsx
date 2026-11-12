@@ -7,7 +7,7 @@ import {
 import { AppStack } from './AppStack';
 import { AuthStack } from './AuthStack';
 
-import { useAuth } from '@app/contexts/AuthContext/useAuth';
+import { useAuthContext } from '@app/contexts/AuthContext/useAuthContext';
 import type { RouteProp } from '@react-navigation/native';
 
 export type RootStackParamList = {
@@ -27,7 +27,7 @@ export type RootStackRouteProps<TRouteName extends keyof RootStackParamList> =
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootStack() {
-	const { signedIn } = useAuth();
+	const { signedIn } = useAuthContext();
 
 	return (
 		<Stack.Navigator screenOptions={{ headerShown: false }}>

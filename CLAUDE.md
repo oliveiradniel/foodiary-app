@@ -16,7 +16,7 @@ UI text is in Brazilian Portuguese.
 
 ### Auth and session
 
-`AuthProvider` (`src/app/contexts/AuthContext/`) restores the tokens saved by `AuthTokensManager` on startup and keeps the splash screen visible until that finishes. `useAuth()` exposes `signedIn`, `signIn`, `signUp` and `signOut`. `signedIn` is true when the account query has data, and `RootStack` uses it to render either `AuthStack` or `AppStack`, so screens never navigate between them by hand.
+`AuthProvider` (`src/app/contexts/AuthContext/`) restores the tokens saved by `AuthTokensManager` on startup and keeps the splash screen visible until that finishes. `useAuthContext()` exposes `signedIn`, `signIn`, `signUp` and `signOut`. `signedIn` is true when the account query has data, and `RootStack` uses it to render either `AuthStack` or `AppStack`, so screens never navigate between them by hand.
 
 `signIn` and `signUp` reject if the account fails to load after the tokens are issued, so callers must handle that failure as well as a rejected credentials request.
 

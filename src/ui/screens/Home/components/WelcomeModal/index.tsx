@@ -1,15 +1,15 @@
-import { useAuth } from '@app/contexts/AuthContext/useAuth';
+import { useAuthContext } from '@app/contexts/AuthContext/useAuthContext';
 import { useAccountQuery } from '@services/AccountsService/hooks/useAccountQuery';
 import { useState } from 'react';
 
 import { theme } from '@ui/styles/theme';
 import { styles } from './styles';
 
-import { Modal, StatusBar, Text, View } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { AppText } from '@ui/components/AppText';
 import { Button } from '@ui/components/Button';
 import { GoalStats } from '@ui/components/GoalStats';
+import { Modal, StatusBar, Text, View } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { Goal } from '@app/types/Goal';
 
@@ -29,7 +29,7 @@ const goalsMap: Record<Goal, { icon: string; label: string }> = {
 };
 
 export function WelcomeModal() {
-	const { signedUp } = useAuth();
+	const { signedUp } = useAuthContext();
 	const { account } = useAccountQuery();
 
 	const [visible, setVisible] = useState(signedUp);

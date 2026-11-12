@@ -1,11 +1,10 @@
-import { useAuth } from '@app/contexts/AuthContext/useAuth';
-import { ERROR_CODE } from '@app/types/ErrorCode';
-import { isAxiosError } from 'axios';
+import { useAuthContext } from '@app/contexts/AuthContext/useAuthContext';
 import { useImperativeHandle, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { isAxiosError } from 'axios';
 import { signInSchema } from './schema';
 
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -15,6 +14,8 @@ import type { Ref } from 'react';
 import type { TextInputInstance } from 'react-native';
 import type { SignInBottomSheetRef } from './SignInBottomSheet';
 
+import { ERROR_CODE } from '@app/types/ErrorCode';
+
 export function useSignInBottomSheetController(ref: Ref<SignInBottomSheetRef>) {
 	const { bottom } = useSafeAreaInsets();
 
@@ -23,7 +24,7 @@ export function useSignInBottomSheetController(ref: Ref<SignInBottomSheetRef>) {
 
 	const [isLoading, setIsLoading] = useState(false);
 
-	const { signIn } = useAuth();
+	const { signIn } = useAuthContext();
 
 	const form = useForm({
 		resolver: zodResolver(signInSchema),
