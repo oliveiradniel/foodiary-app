@@ -4,10 +4,6 @@ import { createVariants, VariantProps } from '@ui/styles/utils/createVariants';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-	wrapper: {
-		borderRadius: 12,
-		overflow: 'hidden',
-	},
 	content: {
 		flexDirection: 'row',
 		gap: 10,
@@ -19,6 +15,8 @@ export const buttonStyles = createVariants({
 	base: {
 		alignItems: 'center',
 		justifyContent: 'center',
+		borderRadius: 12,
+		overflow: 'hidden',
 	},
 	variants: {
 		variant: {
@@ -30,6 +28,9 @@ export const buttonStyles = createVariants({
 			},
 			ghost: {
 				backgroundColor: 'transparent',
+			},
+			neutral: {
+				backgroundColor: theme.colors.lime['700/5'],
 			},
 		},
 		size: {

@@ -12,6 +12,7 @@ type ButtonProps = Omit<ComponentProps<typeof Pressable>, 'children'> &
 		children?: ReactNode;
 		isLoading?: boolean;
 		leftIcon?: LucideIcon;
+		rippleStyle?: 'light' | 'dark';
 	};
 
 export function Button({
@@ -22,6 +23,7 @@ export function Button({
 	style,
 	isLoading,
 	leftIcon: LeftIcon,
+	rippleStyle = 'dark',
 	...props
 }: ButtonProps) {
 	const disabled = disabledProp || isLoading;
@@ -33,31 +35,32 @@ export function Button({
 			children
 		);
 
+	const rippleColor =
+		rippleStyle === 'dark' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)';
+
 	return (
-		<View style={styles.wrapper}>
-			<Pressable
-				style={({ pressed }) => [
-					buttonStyles({
-						variant,
-						size,
-						disabled: disabled ? 'true' : 'false',
-					}),
-					pressed && Platform.OS === 'ios' && { opacity: 0.8 },
-					typeof style === 'function' ? style({ pressed }) : style,
-				]}
-				android_ripple={{ color: 'rgba(0, 0, 0, 0.1)' }}
-				disabled={disabled}
-				{...props}
-			>
-				{!isLoading ? (
-					<View style={styles.content}>
-						{LeftIcon && <LeftIcon color={theme.colors.black[700]} size={20} />}
-						{childEl}
-					</View>
-				) : (
-					<ActivityIndicator color={theme.colors.black[700]} />
-				)}
-			</Pressable>
-		</View>
+		<Pressable
+			style={({ pressed }) => [
+				buttonStyles({
+					variant,
+					size,
+					disabled: disabled ? 'true' : 'false',
+				}),
+				pressed && Platform.OS === 'ios' && { opacity: 0.8 },
+				typeof style === 'function' ? style({ pressed }) : style,
+			]}
+			android_ripple={{ color: rippleColor, foreground: true }}
+			disabled={disabled}
+			{...props}
+		>
+			{!isLoading ? (
+				<View style={styles.content}>
+					{LeftIcon && <LeftIcon color={theme.colors.black[700]} size={20} />}
+					{childEl}
+				</View>
+			) : (
+				<ActivityIndicator color={theme.colors.black[700]} />
+			)}
+		</Pressable>
 	);
 }
