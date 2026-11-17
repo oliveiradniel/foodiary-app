@@ -2,8 +2,10 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { MealsService } from '..';
 
+import { formatLocalDate } from '@app/lib/formatLocalDate';
+
 export function useMealsQuery(date: Date) {
-	const formattedDate = formatDate(date);
+	const formattedDate = formatLocalDate(date);
 
 	const { data, isLoading, isFetching, refetch } = useQuery({
 		queryKey: ['meals', formattedDate],
@@ -18,12 +20,4 @@ export function useMealsQuery(date: Date) {
 		isLoading: isFetching,
 		loadMeals: refetch,
 	};
-}
-
-function formatDate(date: Date) {
-	const day = String(date.getDate()).padStart(2, '0');
-	const month = String(date.getMonth() + 1).padStart(2, '0');
-	const year = date.getFullYear();
-
-	return `${year}-${month}-${day}`;
 }
