@@ -13,10 +13,14 @@ import { View } from 'react-native';
 import { AppText } from '../AppText';
 import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
-import { Input, type InputComponentType } from '../Input';
+import { Input } from '../Input';
 
 import type { Ref } from 'react';
-import type { SignInBottomSheetRef } from './SignInBottomSheet';
+import type { InputComponentType } from '../Input';
+
+export type SignInBottomSheetRef = {
+	open: () => void;
+};
 
 // @gorhom/bottom-sheet 5.2.14 ainda tipa o ref como `TextInput`, que não é
 // mais um tipo de instância na Strict API do RN 0.88 (o certo é `TextInputInstance`)

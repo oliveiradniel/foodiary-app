@@ -14,7 +14,7 @@ import { Image, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import type { AuthStackNavigationProps } from '@app/navigation/AuthStack';
-import type { SignInBottomSheetRef } from '@ui/components/SignInBottomSheet/SignInBottomSheet';
+import type { SignInBottomSheetRef } from '@ui/components/SignInBottomSheet';
 
 export function Greetings() {
 	const signInBottomSheetRef = useRef<SignInBottomSheetRef>(null);

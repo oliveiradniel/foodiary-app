@@ -12,7 +12,7 @@ import { Alert } from 'react-native';
 
 import type { Ref } from 'react';
 import type { TextInputInstance } from 'react-native';
-import type { SignInBottomSheetRef } from './SignInBottomSheet';
+import type { SignInBottomSheetRef } from '.';
 
 import { ERROR_CODE } from '@app/types/ErrorCode';
 
