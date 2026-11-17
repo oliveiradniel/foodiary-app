@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { useAccountQuery } from '@services/AccountsService/hooks/useAccountQuery';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -7,16 +8,22 @@ import { AppText } from '@ui/components/AppText';
 import { Button } from '@ui/components/Button';
 import { theme } from '@ui/styles/theme';
 import { TargetIcon } from 'lucide-react-native';
-import { Image, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
+
+import type { AppStackNavigationProps } from '@app/navigation/AppStack';
 
 export function UserHeader() {
 	const { top } = useSafeAreaInsets();
+	const { navigate } = useNavigation<AppStackNavigationProps>();
 
 	const { account } = useAccountQuery();
 
 	return (
 		<View style={[styles.container, { paddingTop: top }]}>
-			<View style={styles.userInfo}>
+			<TouchableOpacity
+				style={styles.userInfo}
+				onPress={() => navigate('profile')}
+			>
 				<Image
 					source={{
 						uri: 'https://github.com/oliveiradniel.png',
@@ -30,9 +37,13 @@ export function UserHeader() {
 					</AppText>
 					<AppText weight="semiBold">{account!.profile.name}</AppText>
 				</View>
-			</View>
+			</TouchableOpacity>
 
-			<Button variant="ghost" leftIcon={TargetIcon}>
+			<Button
+				variant="ghost"
+				leftIcon={TargetIcon}
+				onPress={() => navigate('editGoals')}
+			>
 				Metas
 			</Button>
 		</View>
