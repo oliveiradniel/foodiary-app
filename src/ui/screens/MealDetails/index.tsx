@@ -4,11 +4,11 @@ import { useMealQuery } from '@services/MealsService/hooks/useMealQuery';
 import { styles } from './styles';
 
 import { AppText } from '@ui/components/AppText';
+import { Skeleton } from '@ui/components/Skeleton';
 import { FlatList, View } from 'react-native';
 import { Header } from './components/Header';
 
 import type { AppStackRouteProps } from '@app/navigation/AppStack';
-import { Skeleton } from 'moti/skeleton';
 
 export function MealDetails() {
 	const { params } = useRoute<AppStackRouteProps<'mealDetails'>>();

@@ -12,9 +12,9 @@ import { ChevronLeftIcon } from 'lucide-react-native';
 
 import { AppText } from '@ui/components/AppText';
 import { Button } from '@ui/components/Button';
+import { Skeleton } from '@ui/components/Skeleton';
 import { BlurTargetView, BlurView } from 'expo-blur';
 import { Image, StatusBar, View } from 'react-native';
-import { MealDetailSkeleton } from '../MealDetailSkeleton';
 
 import { MealInputType, type Meal } from '@app/types/Meal';
 import type { ComponentRef } from 'react';
@@ -113,7 +113,7 @@ export function Header({ meal, isLoading }: HeaderProps) {
 
 					<View style={styles.caloriesContainer}>
 						<AppText color={theme.colors.gray[300]}>Calorias</AppText>
-						<MealDetailSkeleton
+						<Skeleton
 							width={61}
 							height={24}
 							colorMode="dark"
@@ -122,7 +122,7 @@ export function Header({ meal, isLoading }: HeaderProps) {
 							<AppText color={theme.colors.white} weight="medium">
 								{Math.round(summary.calories)}kcal
 							</AppText>
-						</MealDetailSkeleton>
+						</Skeleton>
 					</View>
 				</View>
 			</View>
@@ -131,7 +131,7 @@ export function Header({ meal, isLoading }: HeaderProps) {
 				<View style={styles.macro}>
 					<AppText color={theme.colors.gray[700]}>Proteínas</AppText>
 
-					<MealDetailSkeleton width={96} height={24} isLoading={isLoading}>
+					<Skeleton width={96} height={24} isLoading={isLoading}>
 						<AppText
 							weight="medium"
 							align="center"
@@ -139,13 +139,13 @@ export function Header({ meal, isLoading }: HeaderProps) {
 						>
 							{Math.round(summary.proteins)}g ({percentages.proteins}%)
 						</AppText>
-					</MealDetailSkeleton>
+					</Skeleton>
 				</View>
 
 				<View style={styles.macro}>
 					<AppText color={theme.colors.gray[700]}>Carboidratos</AppText>
 
-					<MealDetailSkeleton width={96} height={24} isLoading={isLoading}>
+					<Skeleton width={96} height={24} isLoading={isLoading}>
 						<AppText
 							weight="medium"
 							align="center"
@@ -154,13 +154,13 @@ export function Header({ meal, isLoading }: HeaderProps) {
 							{Math.round(summary.carbohydrates)}g ({percentages.carbohydrates}
 							%)
 						</AppText>
-					</MealDetailSkeleton>
+					</Skeleton>
 				</View>
 
 				<View style={styles.macro}>
 					<AppText color={theme.colors.gray[700]}>Gorduras</AppText>
 
-					<MealDetailSkeleton width={96} height={24} isLoading={isLoading}>
+					<Skeleton width={96} height={24} isLoading={isLoading}>
 						<AppText
 							weight="medium"
 							align="center"
@@ -168,12 +168,12 @@ export function Header({ meal, isLoading }: HeaderProps) {
 						>
 							{Math.round(summary.fats)}g ({percentages.fats}%)
 						</AppText>
-					</MealDetailSkeleton>
+					</Skeleton>
 				</View>
 			</View>
 
 			<View style={styles.macrosProgressContainer}>
-				<MealDetailSkeleton width="100%" height={4} isLoading={isLoading}>
+				<Skeleton width="100%" height={4} isLoading={isLoading}>
 					<View style={styles.macrosProgress}>
 						<View
 							style={[
@@ -191,17 +191,17 @@ export function Header({ meal, isLoading }: HeaderProps) {
 							style={[styles.fatsProgress, { width: `${percentages.fats}%` }]}
 						/>
 					</View>
-				</MealDetailSkeleton>
+				</Skeleton>
 			</View>
 
 			<View style={styles.divider} />
 
 			<View style={styles.mealNameContainer}>
-				<MealDetailSkeleton width="50%" height={24} isLoading={isLoading}>
+				<Skeleton width="50%" height={24} isLoading={isLoading}>
 					<AppText size="xl" weight="semiBold" style={styles.mealName}>
 						{meal?.name}
 					</AppText>
-				</MealDetailSkeleton>
+				</Skeleton>
 			</View>
 
 			<AppText
