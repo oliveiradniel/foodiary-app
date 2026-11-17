@@ -7,6 +7,7 @@ import { HomeProvider } from './context/HomeProvider';
 
 import { FlatList, RefreshControl, View } from 'react-native';
 import { EmptyState } from './components/EmptyState';
+import { Fab } from './components/Fab';
 import { FullScreenLoader } from './components/FullScreenLoader';
 import { Header } from './components/Header';
 import { ItemSeparatorComponent } from './components/ItemSeparatorComponent';
@@ -64,6 +65,8 @@ export function Home() {
 					renderItem={({ item: meal }) => <MealCard meal={meal} />}
 				/>
 			</HomeProvider>
+
+			{meals.length > 0 && <Fab />}
 		</View>
 	);
 }
