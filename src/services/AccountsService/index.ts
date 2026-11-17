@@ -1,5 +1,6 @@
 import { Service } from '@services/Service';
 
+import { utcToLocalDate } from '@app/lib/utcToLocalDate';
 import { Gender } from '@app/types/Gender';
 import { Goal } from '@app/types/Goal';
 
@@ -12,7 +13,7 @@ export class AccountsService extends Service {
 			...data,
 			profile: {
 				...data.profile,
-				birthDate: new Date(data.profile.birthDate),
+				birthDate: utcToLocalDate(data.profile.birthDate),
 			},
 		};
 	}
