@@ -2,6 +2,8 @@ import { useAccountQuery } from '@services/AccountsService/hooks/useAccountQuery
 import { useMemo } from 'react';
 import { useHomeContext } from '../../context/useHomeContext';
 
+import { calculateFoodsSummary } from '@ui/utils/calculateFoodsSummary';
+
 import { styles } from './styles';
 
 import { GoalStats } from '@ui/components/GoalStats';
@@ -12,18 +14,7 @@ export function CurrentGoal() {
 	const { meals, isLoading } = useHomeContext();
 
 	const summary = useMemo(
-		() =>
-			meals
-				.flatMap((meal) => meal.foods)
-				.reduce(
-					(acc, food) => ({
-						calories: acc.calories + food.calories,
-						proteins: acc.proteins + food.proteins,
-						carbohydrates: acc.carbohydrates + food.carbohydrates,
-						fats: acc.fats + food.fats,
-					}),
-					{ calories: 0, proteins: 0, carbohydrates: 0, fats: 0 },
-				),
+		() => calculateFoodsSummary(meals.flatMap((meal) => meal.foods)),
 		[meals],
 	);
 

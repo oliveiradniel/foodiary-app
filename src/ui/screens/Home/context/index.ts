@@ -1,10 +1,10 @@
 import { createContext } from 'react';
 
-import type { Meal } from '@app/types/Meal';
+import type { SimplifiedMeal } from '@app/types/Meal';
 
 export type HomeContextValue = {
 	date: Date;
-	meals: Meal[];
+	meals: SimplifiedMeal[];
 	isLoading: boolean;
 	previousDay: () => void;
 	nextDay: () => void;

@@ -1,3 +1,16 @@
+export enum MealInputType {
+	AUDIO = 'AUDIO',
+	PICTURE = 'PICTURE',
+}
+
+export enum MealStatus {
+	UPLOADING = 'UPLOADING',
+	QUEUED = 'QUEUED',
+	PROCESSING = 'PROCESSING',
+	SUCCESS = 'SUCCESS',
+	FAILED = 'FAILED',
+}
+
 type Food = {
 	name: string;
 	quantity: string;
@@ -7,10 +20,17 @@ type Food = {
 	fats: number;
 };
 
-export type Meal = {
+export type SimplifiedMeal = {
 	id: string;
 	createdAt: Date;
 	name: string;
 	icon: string;
 	foods: Food[];
+};
+
+export type Meal = SimplifiedMeal & {
+	status: MealStatus;
+	inputType: MealInputType;
+	inputFileURL: string;
+	timezone: string;
 };

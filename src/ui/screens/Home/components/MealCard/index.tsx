@@ -1,5 +1,4 @@
-import { useMemo } from 'react';
-import { useHomeContext } from '../../context/useHomeContext';
+import { useMealCardController } from './useMealCardController';
 
 import { theme } from '@ui/styles/theme';
 import { styles } from './styles';
@@ -7,44 +6,15 @@ import { styles } from './styles';
 import { AppText } from '@ui/components/AppText';
 import { Platform, Pressable, View } from 'react-native';
 
-import type { Meal } from '@app/types/Meal';
+import type { SimplifiedMeal } from '@app/types/Meal';
 
 type MealCardProps = {
-	meal: Meal;
+	meal: SimplifiedMeal;
 };
 
 export function MealCard({ meal }: MealCardProps) {
-	const { isLoading } = useHomeContext();
-
-	const formattedFoods = useMemo(
-		() =>
-			meal.foods
-				.map((food, index) => {
-					const name = food.name;
-
-					if (index === 0) {
-						return `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
-					}
-
-					return name;
-				})
-				.join(', '),
-		[meal.foods],
-	);
-
-	const summary = useMemo(
-		() =>
-			meal.foods.reduce(
-				(acc, food) => ({
-					calories: acc.calories + food.calories,
-					proteins: acc.proteins + food.proteins,
-					carbohydrates: acc.carbohydrates + food.carbohydrates,
-					fats: acc.fats + food.fats,
-				}),
-				{ calories: 0, proteins: 0, carbohydrates: 0, fats: 0 },
-			),
-		[meal.foods],
-	);
+	const { formattedFoods, summary, navigate, isLoading } =
+		useMealCardController(meal);
 
 	return (
 		<View style={[styles.container, { opacity: isLoading ? 0.5 : 1 }]}>
@@ -58,8 +28,9 @@ export function MealCard({ meal }: MealCardProps) {
 						styles.card,
 						pressed && Platform.OS === 'ios' && { opacity: 0.5 },
 					]}
-					android_ripple={{ color: 'rgba(0, 0, 0, 0.1)' }}
+					android_ripple={{ color: 'rgba(0, 0, 0, 0.1)', foreground: true }}
 					disabled={isLoading}
+					onPress={() => navigate('mealDetails', { mealId: meal.id })}
 				>
 					<View style={styles.header}>
 						<View style={styles.icon}>
@@ -84,14 +55,14 @@ export function MealCard({ meal }: MealCardProps) {
 						<View style={styles.mealStatsRow}>
 							<View style={styles.mealStat}>
 								<AppText color={theme.colors.support.tomato} weight="medium">
-									{summary.calories.toFixed(0)}
+									{Math.round(summary.calories)}
 								</AppText>
 								<AppText color={theme.colors.gray[700]}>Kcal</AppText>
 							</View>
 
 							<View style={styles.mealStat}>
 								<AppText color={theme.colors.support.teal} weight="medium">
-									{summary.proteins.toFixed(0)}g
+									{Math.round(summary.proteins)}g
 								</AppText>
 								<AppText color={theme.colors.gray[700]}>Proteínas</AppText>
 							</View>
@@ -100,14 +71,14 @@ export function MealCard({ meal }: MealCardProps) {
 						<View style={styles.mealStatsRow}>
 							<View style={styles.mealStat}>
 								<AppText color={theme.colors.support.yellow} weight="medium">
-									{summary.carbohydrates.toFixed(0)}
+									{Math.round(summary.carbohydrates)}
 								</AppText>
 								<AppText color={theme.colors.gray[700]}>Carboidratos</AppText>
 							</View>
 
 							<View style={styles.mealStat}>
 								<AppText color={theme.colors.support.orange} weight="medium">
-									{summary.fats.toFixed(0)}g
+									{Math.round(summary.fats)}g
 								</AppText>
 								<AppText color={theme.colors.gray[700]}>Gorduras</AppText>
 							</View>
